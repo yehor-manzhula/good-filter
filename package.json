@@ -1,0 +1,24 @@
+{
+  "name": "good-filter",
+  "version": "1.0.0",
+  "description": "Good filter.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github:yehor-manzhula/good-filter.git"
+  },
+  "keywords": [
+    "good",
+    "hapijs",
+    "filter"
+  ],
+  "author": "Yehor Manzhula",
+  "license": "ISC",
+  "dependencies": {
+    "hoek": "^6.1.2",
+    "lodash": "^4.17.11"
+  }
+}
