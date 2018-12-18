@@ -5,6 +5,8 @@ const Hoek = require('hoek');
 const matcher = require('./matcher');
 
 const internals = {
+
+    // By default exclude everything
     defaults: {},
 
     utils: {
@@ -66,18 +68,21 @@ class GoodFilter extends Stream.Transform {
     }
 
     _filter(data) {
-        const eventFilter = this._settings[data.event];
+        const filter = this._settings[data.event];
 
         /**
          * By default filter out all not specified events
          */  
-        if (!eventFilter) {
-            return eventFilter;
+        if (!filter) {
+            return filter;
         }
 
-        const matchWith = event => matcher(event, data);
+        const matchProp = prop => matcher(prop, data);
 
-        return eventFilter.include.some(matchWith) && !eventFilter.exclude.some(matchWith);
+        /**
+         * Exclude has higher priority
+         */
+        return filter.include.some(matchProp) && !filter.exclude.some(matchProp);
     }
 }
 
