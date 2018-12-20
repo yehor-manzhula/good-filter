@@ -5,4 +5,50 @@
 
 Maintainer: [Yehor Manzhula][author-github]
 
-More comming soon...
+## Usage
+
+## `new GoodFilter([config])`
+Creates a new GoodFilter object with the following arguments:
+
+    - `[config]` - optional configuration object with the following keys **by default**
+    - `response` - filter for response event 
+    - `error` - filter for error event
+    - `log` - filter for log event
+    - `opts` - filter for opts event
+
+In manifest.js
+
+```javascript
+    const GoodFilter = require('good-filter');
+
+    module.exports = {
+        // ...
+        register: {
+            plugins: {
+                // ...
+                plugin: 'good',
+                options: {
+                    reporters: {
+                        consoleReporter: [
+                            new GoodFilter({
+                                    log: '*',
+                                    error: '*',
+                                    response: {
+                                        include: '*',
+                                        exclude: {
+                                            route: /\/swaggerui\/.*/
+                                        }
+                                    }
+                                }), 
+                            new GoodFormat(),
+                            'stdout']
+                    } 
+                }
+                // ...
+            }
+        }
+    };
+```
+## Usage
+
+[author-github]: <https://github.com/yehor-manzhula>
