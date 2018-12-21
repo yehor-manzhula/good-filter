@@ -30,7 +30,7 @@ function matcher(filter, data) {
      * and call matcher on each item
      */
     if (isArray(filter)) {
-        return filter.length ? filter.every(prop => matcher(prop, data)) : false;
+        return filter.length ? filter.some(prop => matcher(prop, data)) : false;
     }
 
     /**

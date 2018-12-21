@@ -22,6 +22,9 @@ In manifest.js
 
 ```javascript
     const GoodFilter = require('good-filter');
+    
+    // Another one awesome plugin you definitely need to try
+    const GoodFormat = require('good-format');
 
     module.exports = {
         // ...
@@ -58,9 +61,198 @@ In manifest.js
 good-filter supports few types of matcher values
 
     - String - Property value should be equal to matcher value, * sign is used to match any value
-    - RegExp - Property value should match given RegExp using .match method 
-    - Array - Each array value is a separate matcher, under the hood AND logical operator is used, that mean that all of matchers should pass to pass the filter 
+    - RegExp - Property value should match given RegExp using .match method
     - Function - Function to be invoked with property value
+    - Array - Each array value is a separate matcher, under the hood OR logical operator is used, that mean that all of matchers should pass to pass the filter 
 
+#### String
+
+```javascript
+    const GoodFilter = require('good-filter');
+    
+    // Another one awesome plugin you definitely need to try
+    const GoodFormat = require('good-format');
+
+    module.exports = {
+        // ...
+        register: {
+            plugins: {
+                // ...
+                plugin: 'good',
+                options: {
+                    reporters: {
+                        consoleReporter: [
+                            new GoodFilter({
+                                log: '*', // Allow all log events
+                                error: '*', // Allow all error events
+                                response: {
+                                    include: '*', // Include all responses
+                                    exclude: {
+                                        method: 'OPTIONS' // Exclude responses for OPTIONS method
+                                    }
+                                }
+                            }),
+                            new GoodFormat(),
+                            'stdout']
+                    }
+                }
+                // ...
+            }
+        }
+    };
+```
+
+### RegExp
+
+```javascript
+    const GoodFilter = require('good-filter');
+
+    // Another one awesome plugin you definitely need to try
+    const GoodFormat = require('good-format'); 
+
+    module.exports = {
+        // ...
+        register: {
+            plugins: {
+                // ...
+                plugin: 'good',
+                options: {
+                    reporters: {
+                        consoleReporter: [
+                            new GoodFilter({
+                                log: '*',
+                                error: '*',
+                                response: {
+                                    include: '*',
+                                    exclude: {
+                                        route: /\/swaggerui\/.*/ // Exclude swaggerui routes
+                                    }
+                                }
+                            }),
+                            new GoodFormat(),
+                            'stdout']
+                    }
+                }
+                // ...
+            }
+        }
+    };
+```
+
+### Function
+
+```javascript
+    const GoodFilter = require('good-filter');
+
+    // Another one awesome plugin you definitely need to try
+    const GoodFormat = require('good-format'); 
+
+    module.exports = {
+        // ...
+        register: {
+            plugins: {
+                // ...
+                plugin: 'good',
+                options: {
+                    reporters: {
+                        consoleReporter: [
+                            new GoodFilter({
+                                log: '*',
+                                error: '*',
+                                response: {
+                                    include: '*',
+                                    exclude: {
+                                        method: method => ['OPTIONS', 'DELETE'].includes(method); // Exclude OPTIONS and DELETE method
+                                    }
+                                }
+                            }),
+                            new GoodFormat(),
+                            'stdout']
+                    }
+                }
+                // ...
+            }
+        }
+    };
+```
+
+### Array values
+```javascript
+    const GoodFilter = require('good-filter');
+
+    // Another one awesome plugin you definitely need to try
+    const GoodFormat = require('good-format'); 
+
+    module.exports = {
+        // ...
+        register: {
+            plugins: {
+                // ...
+                plugin: 'good',
+                options: {
+                    reporters: {
+                        consoleReporter: [
+                            new GoodFilter({
+                                log: '*',
+                                error: '*',
+                                response: {
+                                    include: '*',
+                                    exclude: {
+                                        method: ['OPTIONS', 'DELETE']
+                                    }
+                                }
+                            }),
+                            new GoodFormat(),
+                            'stdout']
+                    }
+                }
+                // ...
+            }
+        }
+    };
+```
+
+### Array of matchers
+```javascript
+    const GoodFilter = require('good-filter');
+
+    // Another one awesome plugin you definitely need to try
+    const GoodFormat = require('good-format'); 
+
+    module.exports = {
+        // ...
+        register: {
+            plugins: {
+                // ...
+                plugin: 'good',
+                options: {
+                    reporters: {
+                        consoleReporter: [
+                            new GoodFilter({
+                                log: '*',
+                                error: '*',
+                                response: {
+                                    include: '*',
+                                    exclude: [{
+                                        method: method => ['OPTIONS', 'DELETE'].includes(method); // Exclude OPTIONS and DELETE method
+
+                                        // Works as AND logical operator
+                                        route: '/health'    
+                                    }, 
+                                    // Works as OR operator
+                                    {
+                                        route: '/test'
+                                    }]
+                                }
+                            }),
+                            new GoodFormat(),
+                            'stdout']
+                    }
+                }
+                // ...
+            }
+        }
+    };
+```
 
 [author-github]: <https://github.com/yehor-manzhula>
