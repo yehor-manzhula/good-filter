@@ -10,11 +10,13 @@ Maintainer: [Yehor Manzhula][author-github]
 ## `new GoodFilter([config])`
 Creates a new GoodFilter object with the following arguments:
 
-    - `[config]` - optional configuration object with the following keys **by default**
+    - `[config]` - optional configuration object with the following keys
     - `response` - filter for response event 
     - `error` - filter for error event
     - `log` - filter for log event
     - `opts` - filter for opts event
+
+**Notice: By default good filter filters out all the events to allow event * sign should be used**
 
 In manifest.js
 
@@ -31,15 +33,15 @@ In manifest.js
                     reporters: {
                         consoleReporter: [
                             new GoodFilter({
-                                    log: '*',
-                                    error: '*',
+                                    log: '*',   // Allow all log events
+                                    error: '*', // Allow all error events
                                     response: {
-                                        include: '*',
+                                        include: '*', 
                                         exclude: {
-                                            route: /\/swaggerui\/.*/
+                                            route: /\/swaggerui\/.*/ // Route property should match regexp
                                         }
                                     }
-                                }), 
+                                }),
                             new GoodFormat(),
                             'stdout']
                     } 
@@ -49,6 +51,16 @@ In manifest.js
         }
     };
 ```
-## Usage
+
+## Customization
+
+#### Matchers
+good-filter supports few types of matcher values
+
+    - String - Property value should be equal to matcher value, * sign is used to match any value
+    - RegExp - Property value should match given RegExp using .match method 
+    - Array - Each array value is a separate matcher, under the hood AND logical operator is used, that mean that all of matchers should pass to pass the filter 
+    - Function - Function to be invoked with property value
+
 
 [author-github]: <https://github.com/yehor-manzhula>
